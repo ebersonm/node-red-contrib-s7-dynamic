@@ -25,11 +25,16 @@ To use this node, you must install the Node-RED contribution from the Node-RED p
 npm install node-red-contrib-s7-dynamic
 
 
-Usage
-Configuration
-Once installed, configure the node by specifying the following in your input message:
+# Example for Reading Inputs
+```json
+{
+  "payload": {
+    "type": "input",
+    "ip": "192.168.0.1",
+    "rack": 0,
+    "slot": 1,
+    "addresses": [1, 2, 3]
+  }
+}
 
-ip: IP address of the PLC.
-rack: Rack number of the PLC.
-slot: Slot number of the PLC.
-addresses: Array of addresses to read or write.
+
