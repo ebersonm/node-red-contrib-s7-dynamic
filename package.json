@@ -1,0 +1,17 @@
+{
+  "name": "node-red-contrib-s7-dynamic",
+  "version": "0.1.0",
+  "description": "Nó para comunicação com PLC S7 configurável dinamicamente",
+  "main": "s7-dynamic.js",
+  "dependencies": {
+    "node-snap7": "^0.1.0"
+  },
+  "node-red": {
+    "nodes": {
+      "s7-dynamic": "s7-dynamic.js"
+    }
+  },
+  "keywords": ["node-red", "siemens", "s7", "plc", "automacao"],
+  "author": "Ebermor",
+  "license": "MIT"
+}

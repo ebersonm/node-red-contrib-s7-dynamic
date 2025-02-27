@@ -1,0 +1,50 @@
+<script type="text/javascript">
+    RED.nodes.registerType('s7-dynamic', {
+        category: 'Ebermor',
+        color: '#a6bbcf',
+        defaults: {
+            name: { value: "" },
+            host: { value: "192.168.0.1", required: true },
+            addresses: { value: "0,1,2", required: false }
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: "font-awesome/fa-microchip",
+        label: function () {
+            return this.name || "s7-dynamic";
+        },
+        oneditprepare: function () {
+            $("#node-input-addresses").typedInput({
+                types: ['str']
+            });
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="s7-dynamic">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Nome</label>
+        <input type="text" id="node-input-name" placeholder="Nome do nó">
+    </div>
+    <div class="form-row">
+        <label for="node-input-host"><i class="fa fa-globe"></i> IP do PLC</label>
+        <input type="text" id="node-input-host" placeholder="192.168.0.1">
+    </div>
+    <div class="form-row">
+        <label for="node-input-addresses"><i class="fa fa-list"></i> Endereços dos Inputs</label>
+        <input type="text" id="node-input-addresses" placeholder="0,1,2">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="s7-dynamic">
+    <p>Este nó permite a leitura dinâmica de inputs de um PLC Siemens S7.</p>
+    <h3>Configuração:</h3>
+    <ul>
+        <li><b>IP do PLC</b>: Endereço IP do PLC a ser conectado.</li>
+        <li><b>Endereços dos Inputs</b>: Lista separada por vírgulas dos endereços dos inputs a serem lidos (exemplo: 0,1,2).</li>
+    </ul>
+    <h3>Entrada</h3>
+    <p>Você pode enviar um <code>msg.payload</code> com uma lista de endereços dinâmicos para sobrescrever os valores configurados.</p>
+    <h3>Saída</h3>
+    <p>O nó retorna um <code>msg.payload</code> contendo os valores dos inputs lidos.</p>
+</script>
