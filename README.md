@@ -17,16 +17,18 @@ This is a dynamic Node-RED node designed for communication with Siemens S7 PLCs 
 - Siemens S7 PLC or compatible device.
 - `node-snap7` library.
 
+
 ## Installation
 
 To use this node, you must install the Node-RED contribution from the Node-RED palette or manually add it to your `package.json`:
 
-```bash
+``bash
 `npm install node-red-contrib-s7-dynamic.`
 
 
+
 ## Example for Reading Inputs
-```json
+``json
 {
   "payload": {
     "type": "input",
@@ -36,5 +38,45 @@ To use this node, you must install the Node-RED contribution from the Node-RED p
     "addresses": [1, 2, 3]
   }
 }
+## Example for Writing Outputs
+``{
+  "payload": {
+    "type": "output",
+    "ip": "192.168.0.1",
+    "rack": 0,
+    "slot": 1,
+    "addresses": {
+      "Q0": true,
+      "Q1": false
+    }
+  }
+}
+## Example for Memory Read/Write
+``{
+  "payload": {
+    "type": "memory",
+    "ip": "192.168.0.1",
+    "rack": 0,
+    "slot": 1,
+    "addresses": ["M0.1", "M10.0"]
+  }
+}
+
+## License
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Contributing
+Feel free to fork this repository, contribute to the code, and open pull requests with new features or bug fixes.
+
+## Authors
+Eberson M. - Creator - EbersonM
+
+## Acknowledgements
+Thanks to the developers of node-snap7 for the core library to interface with Siemens S7 PLCs.
+Node-RED community for providing the platform for creating powerful IoT applications.
+
+
+
+
 
 
