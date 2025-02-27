@@ -22,10 +22,10 @@ This is a dynamic Node-RED node designed for communication with Siemens S7 PLCs 
 To use this node, you must install the Node-RED contribution from the Node-RED palette or manually add it to your `package.json`:
 
 ```bash
-npm install node-red-contrib-s7-dynamic
+`npm install node-red-contrib-s7-dynamic.`
 
 
-# Example for Reading Inputs
+## Example for Reading Inputs
 ```json
 {
   "payload": {
