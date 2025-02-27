@@ -38,7 +38,7 @@ To use this node, you must install the Node-RED contribution from the Node-RED p
     "addresses": [1, 2, 3]
   }
 }
-
+```
 ### Example for Writing Outputs
 ```json
 {
@@ -53,6 +53,7 @@ To use this node, you must install the Node-RED contribution from the Node-RED p
     }
   }
 }
+```
 ### Example for Memory Read/Write
 ```{
   "payload": {
@@ -63,6 +64,7 @@ To use this node, you must install the Node-RED contribution from the Node-RED p
     "addresses": ["M0.1", "M10.0"]
   }
 }
+```
 
 ## License
 This project is licensed under the MIT License - see the LICENSE file for details.
