@@ -27,8 +27,8 @@ To use this node, you must install the Node-RED contribution from the Node-RED p
 
 
 
-## Example for Reading Inputs
-``json
+### Example for Reading Inputs
+```json
 {
   "payload": {
     "type": "input",
@@ -38,8 +38,10 @@ To use this node, you must install the Node-RED contribution from the Node-RED p
     "addresses": [1, 2, 3]
   }
 }
-## Example for Writing Outputs
-``{
+
+### Example for Writing Outputs
+```json
+{
   "payload": {
     "type": "output",
     "ip": "192.168.0.1",
@@ -51,8 +53,8 @@ To use this node, you must install the Node-RED contribution from the Node-RED p
     }
   }
 }
-## Example for Memory Read/Write
-``{
+### Example for Memory Read/Write
+```{
   "payload": {
     "type": "memory",
     "ip": "192.168.0.1",
