@@ -3,48 +3,74 @@
         category: 'Ebermor',
         color: '#a6bbcf',
         defaults: {
-            name: { value: "" },
-            host: { value: "192.168.0.1", required: true },
-            addresses: { value: "0,1,2", required: false }
+            name: { value: "" }
         },
         inputs: 1,
         outputs: 1,
         icon: "font-awesome/fa-microchip",
         label: function () {
             return this.name || "s7-dynamic";
-        },
-        oneditprepare: function () {
-            $("#node-input-addresses").typedInput({
-                types: ['str']
-            });
         }
     });
 </script>
 
 <script type="text/x-red" data-template-name="s7-dynamic">
     <div class="form-row">
-        <label for="node-input-name"><i class="fa fa-tag"></i> Nome</label>
-        <input type="text" id="node-input-name" placeholder="Nome do nó">
-    </div>
-    <div class="form-row">
-        <label for="node-input-host"><i class="fa fa-globe"></i> IP do PLC</label>
-        <input type="text" id="node-input-host" placeholder="192.168.0.1">
-    </div>
-    <div class="form-row">
-        <label for="node-input-addresses"><i class="fa fa-list"></i> Endereços dos Inputs</label>
-        <input type="text" id="node-input-addresses" placeholder="0,1,2">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Node name">
     </div>
 </script>
 
 <script type="text/x-red" data-help-name="s7-dynamic">
-    <p>Este nó permite a leitura dinâmica de inputs de um PLC Siemens S7.</p>
-    <h3>Configuração:</h3>
+    <p>This node enables dynamic communication with a Siemens S7 PLC.</p>
+
+    <h3>Configuration:</h3>
+    <p>The PLC parameters must be provided dynamically via <code>msg.payload</code> in the following format:</p>
+
+    <pre>
+    {
+        "ip": "192.168.18.100",
+        "rack": 0,
+        "slot": 2,
+        "type": "input",
+        "addresses": ["I0", "I1", "I2"]
+    }
+    </pre>
+
+    <h3>Parameters:</h3>
     <ul>
-        <li><b>IP do PLC</b>: Endereço IP do PLC a ser conectado.</li>
-        <li><b>Endereços dos Inputs</b>: Lista separada por vírgulas dos endereços dos inputs a serem lidos (exemplo: 0,1,2).</li>
+        <li><b>ip</b>: PLC's IP address.</li>
+        <li><b>rack</b>: PLC rack number.</li>
+        <li><b>slot</b>: PLC slot number.</li>
+        <li><b>type</b>: Operation type: "input", "output", or "memory".</li>
+        <li><b>addresses</b>: List of addresses to read from or write to.</li>
     </ul>
-    <h3>Entrada</h3>
-    <p>Você pode enviar um <code>msg.payload</code> com uma lista de endereços dinâmicos para sobrescrever os valores configurados.</p>
-    <h3>Saída</h3>
-    <p>O nó retorna um <code>msg.payload</code> contendo os valores dos inputs lidos.</p>
+
+    <h3>Example for Reading Inputs</h3>
+    <pre>
+    {
+        "ip": "192.168.18.100",
+        "rack": 0,
+        "slot": 2,
+        "type": "input",
+        "addresses": ["I0", "I1", "I2"]
+    }
+    </pre>
+
+    <h3>Example for Writing Outputs</h3>
+    <pre>
+    {
+        "ip": "192.168.18.100",
+        "rack": 0,
+        "slot": 2,
+        "type": "output",
+        "addresses": {
+            "Q0": true,
+            "Q1": false
+        }
+    }
+    </pre>
+
+    <h3>Output:</h3>
+    <p>The node returns a <code>msg.payload</code> containing the read values or confirmation of the write operation.</p>
 </script>
