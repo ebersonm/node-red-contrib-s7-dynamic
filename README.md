@@ -55,7 +55,8 @@ To use this node, you must install the Node-RED contribution from the Node-RED p
 }
 ```
 ### Example for Memory Read/Write
-```{
+```json
+{
   "payload": {
     "type": "memory",
     "ip": "192.168.0.1",
