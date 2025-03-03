@@ -1,0 +1,96 @@
+[
+    {
+        "id": "eb4c2bf3698efaa0",
+        "type": "inject",
+        "z": "de528fd4d22b1e7a",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "0.5",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 620,
+        "y": 640,
+        "wires": [
+            [
+                "978e6f171b1d8c4d"
+            ]
+        ]
+    },
+    {
+        "id": "8ef886941d2dfc59",
+        "type": "debug",
+        "z": "de528fd4d22b1e7a",
+        "name": "debug 1",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1260,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "978e6f171b1d8c4d",
+        "type": "function",
+        "z": "de528fd4d22b1e7a",
+        "name": "function 1",
+        "func": "msg.payload = {\n    \"ip\" : \"192.168.18.100\",\n    \"rack\" : 0,\n    \"slot\" : 2,\n    \"type\" : \"input\",\n    \"addresses\" : [\n        \"I0\",\"I1\",\"I2\"\n    ]\n}\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 820,
+        "y": 640,
+        "wires": [
+            [
+                "ac17171bf753f2c6"
+            ]
+        ]
+    },
+    {
+        "id": "ac17171bf753f2c6",
+        "type": "json",
+        "z": "de528fd4d22b1e7a",
+        "name": "",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 950,
+        "y": 640,
+        "wires": [
+            [
+                "281abb31c03dc2d9"
+            ]
+        ]
+    },
+    {
+        "id": "281abb31c03dc2d9",
+        "type": "s7-dynamic",
+        "z": "de528fd4d22b1e7a",
+        "name": "",
+        "x": 1090,
+        "y": 640,
+        "wires": [
+            [
+                "8ef886941d2dfc59"
+            ]
+        ]
+    }
+]
