@@ -35,7 +35,7 @@ To use this node, you must install the Node-RED contribution from the Node-RED p
     "ip": "192.168.0.1",
     "rack": 0,
     "slot": 1,
-    "addresses": [1, 2, 3]
+    "addresses": [I1, I2, I3]
   }
 }
 ```
