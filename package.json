@@ -21,6 +21,7 @@
   "engines": {
     "node": ">=12.0.0"
   },
-  "url": "https://github.com/ebersonm/node-red-contrib-s7-dynamic/issues",
-  "email": "ebermor@gmail.com"
+  "bugs": {
+    "url": "https://github.com/ebersonm/node-red-contrib-s7-dynamic/issues"
+  }
 }
