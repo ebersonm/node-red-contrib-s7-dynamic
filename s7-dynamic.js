@@ -8,6 +8,7 @@ module.exports = function (RED) {
         let isProcessing = false;
 
         // Conectar ao PLC
+        /*
         function connect(host, rack, slot) {
             return new Promise((resolve, reject) => {
                 try {
@@ -23,6 +24,30 @@ module.exports = function (RED) {
                 }
             });
         }
+        */
+        function connect(host, rack, slot, timeout = 2000) {
+            return new Promise((resolve, reject) => {
+                let timeoutHandle = setTimeout(() => {
+                    client.Disconnect(); // Desconectar se ultrapassar o tempo limite
+                    reject(new Error("Connection Timeout: PLC não respondeu"));
+                }, timeout);
+
+                try {
+                    client.ConnectTo(host, rack, slot, (err) => {
+                        clearTimeout(timeoutHandle); // Cancela timeout se conectar
+                        if (err) {
+                            reject(new Error(`Connection error: ${client.ErrorText(err)}`));
+                        } else {
+                            resolve();
+                        }
+                    });
+                } catch (e) {
+                    clearTimeout(timeoutHandle);
+                    reject(new Error(`Exception during connection: ${e.message}`));
+                }
+            });
+        }
+
 
         // Ler byte de entrada (EBRead)
         function readInputByte(byteIndex) {
