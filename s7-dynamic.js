@@ -68,10 +68,10 @@ module.exports = function (RED) {
 
         // Escrever byte na saída (ABWrite)
         function writeOutputByte(byteIndex, data) {
-           
+
             return new Promise((resolve, reject) => {
                 try {
-                    client.ABWrite(byteIndex,data.length, data, (err) => {
+                    client.ABWrite(byteIndex, data.length, data, (err) => {
                         if (err) reject(new Error(`Error writing output byte ${byteIndex}: ${client.ErrorText(err)}`));
                         else resolve();
                     });
@@ -82,6 +82,7 @@ module.exports = function (RED) {
         }
 
         // Converter endereços "M0.1" e "Q0" para byte/bit index
+        /*
         function parseAddress(address, type) {
             let match;
             if (type === 'memory') match = address.match(/^M(\d+)\.(\d+)$/);
@@ -97,6 +98,23 @@ module.exports = function (RED) {
 
             return { byteIndex: type === 'output' ? Math.floor(byteIndex / 8) : byteIndex, bitIndex };
         }
+        */
+        function parseAddress(address, type) {
+            let match;
+            if (type === 'input') match = address.match(/^I(\d+)$/);
+            else if (type === 'memory') match = address.match(/^M(\d+)\.(\d+)$/);
+            else if (type === 'output') match = address.match(/^Q(\d+)$/);
+
+            if (!match) throw new Error(`Invalid ${type} address format: ${address}`);
+
+            const bitIndex = parseInt(match[1], 10);  // Pega o número após 'I' (bitIndex direto)
+            const byteIndex = Math.floor(bitIndex / 8); // Calcula em qual byte está o bit
+
+            return { byteIndex, bitIndex: bitIndex % 8 };
+        }
+
+
+
 
         // Ler entradas e memória
         async function readData(msg, type) {
@@ -116,7 +134,9 @@ module.exports = function (RED) {
                     let { byteIndex, bitIndex } = parseAddress(addr, type);
 
                     let byteValue = type === 'input' ? await readInputByte(byteIndex) : await readMemoryByte(byteIndex);
-                    let bitValue = (byteValue[0] & (1 << bitIndex)) !== 0;
+                    //let bitValue = (byteValue[0] & (1 << bitIndex)) !== 0;
+                    let bits = byteValue[0].toString(2).padStart(8, '0').split('').reverse();
+                    let bitValue = bits[bitIndex] === '1';
                     results[addr] = bitValue;
                 }
 
@@ -134,48 +154,48 @@ module.exports = function (RED) {
         // Escrever nas saídas
         async function writeOutputs(msg) {
             const { ip, rack, slot, addresses } = msg.payload;
-        
+
             if (!ip || rack === undefined || slot === undefined || typeof addresses !== "object") {
                 node.send({ payload: { error: "Invalid output parameters" } });
                 return;
             }
-        
+
             try {
                 await connect(ip, rack, slot);
-        
+
                 let byteMap = {}; // Armazena bytes modificados
-        
+
                 // Validar os valores de "addresses"
                 for (let addr in addresses) {
                     const bitValue = addresses[addr];
-                    
+
                     // Garantir que o valor seja true, false, 1 ou 0
                     if (![true, false, 1, 0].includes(bitValue)) {
                         node.send({ payload: { error: `Invalid value for address ${addr}. Only true, false, 1, or 0 are allowed.` } });
                         return;
                     }
-        
+
                     let { byteIndex, bitIndex } = parseAddress(addr, 'output');
-              
+
                     if (!(byteIndex in byteMap)) {
                         let byteValue = await readOutputByte(byteIndex);
                         byteMap[byteIndex] = byteValue[0];
                     }
-        
+
                     // Atualizar o valor do bit
                     if (bitValue) byteMap[byteIndex] |= (1 << bitIndex);
                     else byteMap[byteIndex] &= ~(1 << bitIndex);
                 }
-        
+
                 // Escrever bytes modificados
                 for (let byteIndex in byteMap) {
                     let data = Buffer.from([byteMap[byteIndex]]);
-                    
+
                     await writeOutputByte(parseInt(byteIndex, 10), data);
                 }
-        
+
                 node.send({ payload: { success: true } });
-        
+
             } catch (error) {
                 node.log(`Error writing outputs: ${error.message}`);
                 node.send({ payload: { error: error.message } });
@@ -183,9 +203,9 @@ module.exports = function (RED) {
                 client.Disconnect();
             }
         }
-        
-        
-        
+
+
+
 
         // Processar mensagens recebidas
         node.on('input', async function (msg) {
